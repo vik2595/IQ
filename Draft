@@ -1,0 +1,22 @@
+Create a admin account
+
+$userName = 'newLocalAdmin'
+$password = ConvertTo-SecureString -String '123456789' -AsPlainText -Force
+$group = 'Administrators'
+
+Invoke-Command -ComputerName $comp -ArgumentList $userName, $password, $group -ScriptBlock {
+    New-LocalUser -Name $args[0] -FullName 'Local Admin' -Description 'Local Admin Account' -Password $args[1] -PasswordNeverExpires -AccountNeverExpires
+    Add-LocalGroupMember -Group $args[2] -Member $args[0]
+}
+
+
+#copy files
+$Source = "\\192.168.x.x\somefile.txt"
+$Dest   = "C:\Users\user\somefile.txt"
+$Username = "username"
+$Password = "password"
+
+$WebClient = New-Object System.Net.WebClient
+$WebClient.Credentials = New-Object System.Net.NetworkCredential($Username, $Password)
+
+$WebClient.DownloadFile($Source, $Dest)
