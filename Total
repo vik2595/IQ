@@ -1,0 +1,83 @@
+Interview Questions
+
+    Assignment
+    Part 1
+    Create a Powershell script svrInfo.ps1 which will collect the following information on the local machine and write out to the console:
+    Current Date/Time
+		get-date
+    Computer Name
+		(Get-WmiObject Win32_Computersystem).name
+    IP Address
+		Test-Connection -ComputerName (hostname) -Count 1  | Select IPV4Address
+    Total Current CPU Usage
+		(Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average ).Average
+    Total number of Windows Services installed
+		get-service | Measure-Object -Line
+    Total number of Windows Services running
+		Get-Service | Where-Object {$_.Status -eq "Running"} | Measure-Object -Line
+    The script does not need to take any user input. All information should be collected into a PSObject, and displayed to the console using Format-List.  
+    
+	
+    Part 2
+	
+    Create a Powershell script, newGceInstance.ps1 which will do the following:
+    
+	
+	Create a new GCE instance from the Windows 2012 R2 base Image  -Done
+		$instancename = Read-Host 'Enter GCE Instance Name'
+		$GCEProject = Read-Host 'Enter Porject Name'
+		$GCEZone = Read-Host 'Enter GCE Zone'
+		$GCEScript = Read-Host 'Enter location on script (path for svrInfo.ps1 file)'
+		gcloud beta compute --project=$GCEProject instances create $instancename --zone=$GCEZone --machine-type=n1-standard-1 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=425425884307-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --image=ubuntu-1604-xenial-v20191217 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=instance-1 --reservation-affinity=any
+	
+	
+    Create a local admin account on the server -
+	
+		gcloud config set project pure-ivy-262617
+		
+    
+	Create a remote powershell session to the instance
+		
+		copy shh
+		gcloud config set project pure-ivy-262617
+    
+	Copy svrInfo.ps1 from your local machine onto the instance
+		
+		
+	Run the svrInfo.ps1 script on the instance and write the output to the user's screen
+		
+		
+    Configure a scheduled task on the instance which will run svrInfo.ps1 on server startup and direct output to a local text file.
+		Import-Module TaskScheduler $task = New-Task
+		$task.Settings.Hidden = $true
+		Add-TaskAction -Task $task -Path C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe –Arguments “-File C:\Scripts\GroupMembershipChanges.ps1”
+		Add-TaskTrigger -Task $task -Daily -At “10:00”
+		Register-ScheduledJob –Name ”Monitor Group Management” -Task $task
+		
+	Close the Remote PS session and write a message to the user’s console indicating that the script completed successfully.
+		
+		
+		if (exit())
+		{
+			write-host "Successfull"
+		}
+		else
+		{
+			write-host ("error")
+		}
+		
+		exit
+		if () 
+			{
+			Write-Host "The value $a is greater than 2."
+			}
+		else {
+			Write-Host ("The value $a is less than or equal to 2," + " is not created or is not initialized.")
+			}
+		
+	This script must take the following parameters from the user:
+		InstanceName - Name of the GCE instance to create
+		GceProject - Name of the GCP project where the instance is created
+		GceZone - Name of the GCP zone where the instance is created
+		Script - Location of svrInfo.ps1 on the user’s local machine
+    The script should gracefully fail and output a clear message to the user in the event that the instance already exists in the project. 
