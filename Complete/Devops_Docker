@@ -1,0 +1,231 @@
+Traditional Systesm
+Hypervisors
+Containerization
+
+
+Docker using AWS:
+
+Create EC2 AMI Instance-> Select Ubuntu 18.04-> Instance Type GP Free tier-> Configure instance Public IP- Enable-> Add Tags Name Docker-> conf sec group (SSH TCP 22 Anywhere)and additional 8080 as well-> use existing key-> launch.
+
+Install docker on this.
+
+1. Create Ubuntu EC2 and add SG 8080 and port 22
+2. Launch EC2. 
+3. Go to get.docker.com and copy below 2 lines and run one by one
+ curl -fsSL https://get.docker.com -O get-docker.sh
+ sh get-docker.sh
+4. sudo usermod -aG docker <username>
+	sudo usermod -aG docker ubuntu
+5. Exit
+6. Login back
+
+7. verify docker version
+ docker version
+ docker images
+ docker info
+ 
+go to dockerhub for all docker images (Create free docker account)
+
+
+EC2
+JDk
+Maven
+Jenkins
+
+search fro jenkins and select the popular image
+Copy the image from docker hub and follow below steps
+
+downlaod and run jenkins:
+1. docekr pull jenkins
+2. Create folder in home directory ex: Venkat/Jenkins_Home
+mkdir venkat
+cd venkat
+mkdir Jenkins_Home
+cd Jenkins_Home
+3. Chmod 777 venkat
+4. chmod 777 Jenkins_Home
+5. Run below commands
+cd 
+docker run --name MyJenkins1 -p 8080:8080 -p 50000:50000 -v /home/ubuntu/venkat/Jenkins_Home:/var/jenkins_home jenkins
+docker run --name MyJenkins2 -p 8080:8080 -p 50000:50000 -v /home/ec2-user/venkat/Jenkins_Home:/var/jenkins_home jenkins
+
+copy public ip from docker ami and use 8080 to login to jenkins
+get the initial password from here use to login to jenkins
+jenkins password
+
+docker ps
+docker ps -a 
+docker stop <container id> or <name>
+docker rm <container id> or <name>
+
+docker stacks
+
+
+
+Hello World
+1. docekr pull hello-world
+2. docker run hello-world
+
+
+Nginx web server;
+1. docekr pull nginx
+2. docker run nginx
+
+docker run --name -d -p 8080:80 nginx
+docker ps
+docker run -it nginx /bin/bash (container path)
+
+
+
+
+Docker File:
+what is dockerfile
+how to create docker file
+how to build image from docker file
+automation of docker image creation
+
+FROM
+RUN
+CMD
+
+Step1: Create a file named dockerfile
+step2: Add instructions in Dockerfile
+step3: Build dockerfile to create image
+step4: Run image to create container
+
+Docker File;
+============
+FROM nginx
+MAINTAINER venkat
+Run touch login.txt
+CMD ["echo","This is my first image"]
+
+COMMANDS:
+: docker build
+: docker build -t ImageName:Tag directoryOfDockerfile .
+
+ex: docker build -t ImageName:Tag .
+: docker build -t my_first:latest .
+
+: docker run image
+
+
+on Ubuntu user level
+mkdir DockerFolder
+cd DockerFolder
+vi Dockerfile
+insert
+FROM nginx
+MAINTAINER venkat
+Run touch login.txt
+CMD ["echo","This is my first image"
+cat Dockerfile
+
+create own docekr image:
+docker build -t myimage:latest .
+docker images
+go to inside container and execute below
+docker run -it myimage /bin/bash (container path)
+docker run myimage
+
+
+----------------------------------------------------------------------------------------------
+
+docker pull hello-world
+docker run hello-world
+
+docker pull nginx
+docker run --name nginx -d -p 8080:80 nginx
+docker ps
+docker run -it nginx /bin/bash it takes you to inside container
+ls
+cd opt
+ls
+
+
+What is docker file
+how to create a dockerfile
+how to build image from dockerfile
+basic commands
+
+Dockerfile: A text file with ins to build image
+Automation of docker image creation
+FROM
+RUN
+CMD
+
+Create a file named dockerfile
+Add instructions in dockerfile
+build dockerfile to create image
+run image to create container
+
+Commands:
+
+: docker build
+: docker build -t ImageName:Tag directoryOfDockerfile
+
+ex: docker build -t Imagename:Tag .
+docker build -t my_first:latest .
+
+:docker run image
+
+Example:
+Dokerfile:
+FROM nginx
+MAINTAINER Venkat
+Run touch login.txt
+CMD ["echo", "This is my first image"]
+
+mkdir dockerfolder
+ls
+cd dockerfolder
+vi dockerfile
+add code here
+cat dockerfile
+
+: docker build -t myimage:latest .
+docker images
+docker run -it myimage /bin/bash
+ls 
+cat login.txt
+
+docker run myimage (it will pringt the text)
+
+
+Go to jenkins webhook project
+
+Maven project
+Post build steps
+https://github.com/smuvw77/hello-world.git
+
+source files: webapp/target/*.war
+Remove Prefix: webapp/target
+Remote directorr: //opt//docker
+Exec Command: dockerstop softq_demo;
+docker rm -f softq_demo;
+docker image rm -f softq_demo:
+cd /opt/docker;
+docker build -t softq_demo.
+
+send file or  over ssh
+
+name: docker_host
+
+exec Command: 
+docker run -d --name softq_demo -p 8090:8080
+softq_demo
+
+
+other
+from Jenkins
+Manage jenkins
+configure system
+docker_host
+172.1.
+dockeradmin
+dockeradmin
+
+Docker documents
+
+running your first container
+

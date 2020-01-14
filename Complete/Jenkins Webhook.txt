@@ -1,0 +1,31 @@
+90f5607f5e68448ea1dd9489fa032887
+
+
+192.168.0.19
+
+99.224.233.254
+
+https://99.224.233.254:8080/github-webhook/
+
+http://bfbaed58.ngrok.io/github-webhook/
+
+
+6
+
+If you want to try to run Jenkins on localhost, the other way around is that, install ngrok: https://ngrok.com/download which expose localhost urls over internet. After installation of the ngrok run it e.g
+
+./ngrok http 8080
+It will give you a url like this: http://3b2db437.ngrok.io
+
+Now under payloadUrl: type the url as:
+
+http://3b2db437.ngrok.io:8080/github-webhook/
+Now the localhost Jenkins setup would run and the payload error would be gone.
+
+Note: In above URL, you mentioned 8080 again. Since the url generated on ngrok already contains this, adding it again would result in service timeout error : "We couldn’t deliver this payload: Service Timeout".
+
+To avoid this, you want to edit your webhook as (removing :8080) " http://3b2db437.ngrok.io/github-webhook/
+
+This solved the problem.
+
+Also a tip for end users: I forgot to add a trailing forward slash after github-webhook/, which caused issues for me. I saw others also doing the same mistake and found answers on StackOverflow. Maybe something to be careful about.

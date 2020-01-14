@@ -1,0 +1,59 @@
+Register or Login to AWS (https://aws.amazon.com)
+Create an AWS account for 12 months with creds and personal purposes with payment details
+
+Linux on AWS:
+From services -> Click on EC2 -> From EC2 management console -> Click on Launch instance-> Amazon Machine Image (AMI)-> Select any Linux AMI with necessary softs -> make sure to select free tier eligible only -> Review and Launch ->
+Number of Instances (1)-> Auto assign Ip Address (Enable) -> click on add storage -> use default size -> Click on tags -> Add tag-> Add key as Name adn value as Jenkins Server -> Click on Configure Security Group -> Create a new Security group->
+Jenkins-Adrim -> (Type SSh, TCP, 22, Anywhere, ) -> Add another Rule-> (Custop TCP Rule, TCP, 8080, Anywhere-> Review and Launch -> Launch -> Select an existing key pair or Create a new key pair -> seelct Create a new Key pair->
+Key pair name as AWS key -> Download Key pair-> save it to work folder and under AWS folder on your local machine -> Launch Instances -> once the server is initialized click on connect -> copy the SSH key from example -> go to AWS key file folder in local machine adn use git bash and execute the SSH key command from example ->
+Continue connectiing -> per month only 760 hours to be used -> go to AWs and running instances and to stop the instance selct the box for instance -> from Actions -> Instance state-> stop->
+
+sudo su -
+
+Java on AWS:
+java -version will give you the java version
+sudo yum list| grep java-1.8
+sudo yum install java-1.8.0-openjdk-devel -y
+update-alternatives --config java -> selection number -> 2
+
+
+Jenkins on AWS:
+go to https://pkg.jenkins.io/redhat-stable/
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+Dependncy - 2.164 (2019-02) and newer: Java 8 or Java 11, 2.54 (2017-04) and newer: Java 8, 1.612 (2015-05) and newer: Java 7)
+With that set up, the Jenkins package can be installed with:
+sudo yum install jenkins
+
+Start Jenkins:
+service jenkins start (on terminal)
+From AWS account copy public ip to open Jenkins on Web URl (ipadd:8080)
+Copy the link to initial admin password -> go to terminal and paste the command to retrieve the password -> cat to the path -> copy the password and continue to Web URL-> provide username as admin and pasword as admin-> it will provide jenkins URL->
+Jenkins is Ready.
+
+Creae Job1-> Execute shell -> 
+
+login from different system:
+From people -> Manage users-> crete user-> new user
+get the public ip address -> and login from another machine-> provide new username and password-> 
+
+Git on AWS:
+yum list| grep git
+yum install git
+git --version
+
+
+Maven on AWS:
+cd /opt
+sudo wget http://www-us.apche.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.zip
+ls
+unzip apache-maven-3.5.4-bin.zip
+remove the zip out of this folder for space
+go to root
+ls -lat
+add env variable in .bashrc
+vi .bashrc
+
+
+After Effects Udemy
+Louay ZamBArakji

@@ -1,0 +1,303 @@
+Play and play books:
+
+Plays are ordered sets of tasks to execute against host selection from your inventory
+
+Playbook is a file containing one or more plays
+
+Playbooks are ansible configuration deployment and orchestration language
+
+YAML (Yet Another markup language) is powerful conf tool to write ansible playbooks
+
+YAML is a human readble data serialization format.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+inventory:
+
+web1 ansible_ssh_host=172.31.35.7
+db1 ansible_ssh_host=172.31.36.254
+
+
+Any yaml file starts with ---
+
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes					(Header)
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 1.0
+  vars_files:
+    - conf/copyright.yml
+	- conf/webdefaults.yml
+  vars_prompt:
+    - name: pkg_name
+	  prompt: Install which package?
+  tasks:
+    - name: Install {{ pkg_name }} software
+	  yum: pkg={{pkg_name}} state=installed
+	- name: check for Telnet Client
+	  yum: pkg=telnet state=absent
+
+creating YAML
+
+vi sample.yml
+insert
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  
+cat inventory
+run: ansible-playbook sample.yml
+
+now edit and insert   gather_facts: yes
+ansible-playbook sample.yml
+
+
+vi sample.yml
+insert
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: yes
+  
+ Errors will be observed if any systems are not started
+
+----------------------------------------------------------------------------------------------------------------------------
+
+mkdir playbooks
+cd playbooks
+create ymls here.
+
+ 
+ git --version
+ yum uninstall git
+ 
+Install Git:
+-------------
+
+vi web_git_installed.yml
+web_git_installed yml to be created with below content
+ 
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes					(Header)
+  connection: ssh
+  gather_facts: yes
+  
+  tasks:
+   - name: Install Git
+	 yum: name=git state=installed
+	  
+	  
+vi web_git_installed.yml
+
+validate yml file to cehck for the correct syntaxes.
+jsonformatter.org/yaml-validator
+
+ansible-playbook web_git_installed.yml
+git --version 
+
+Un-Install Git:
+---------------
+vi web_git_uninstalled.yml
+web_git_uninstalled yml to be created with below content
+ 
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes					(Header)
+  connection: ssh
+  gather_facts: yes
+  
+  tasks:
+   - name: Un-Install Git
+	 yum: name=git state=absent
+
+
+Install HTTPD:
+-------------
+
+vi web_git_installed_httpd.yml
+web_git_installed_httpd yml to be created with below content
+ 
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes					(Header)
+  connection: ssh
+  gather_facts: yes
+  
+  tasks:
+   - name: Install Git
+	 yum: name=git state=installed
+
+   - name: Install Httpd
+	 yum: name=httpd state=installed
+	  
+vi web_git_installed_httpd.yml
+
+validate yml file to cehck for the correct syntaxes.
+jsonformatter.org/yaml-validator
+
+ansible-playbook web_git_installed_httpd.yml
+git --version 
+
+
+
+vi web_git_installed_httpd1.yml
+
+Yml with variables:
+Any yaml file starts with ---
+
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes					(Header)
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 1.0
+	git_name: git
+	
+  tasks:
+   - name: Install Git {{ playbook_version }}
+	 yum: name={{ git_name }} state=installed
+   - name: Install Httpd
+	 yum: name=httpd state=installed
+	  
+
+Now try dbserver examples also.
+
+------------------------------------------
+Example with var files and prompts
+
+on server machine
+su - ansadmin
+cd conf
+
+vi myfirstplayvars.yml
+
+ny yaml file starts with ---
+
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 1.0
+  vars_files:
+    - conf/copyright.yml
+	- conf/webdefaults.yml
+  vars_prompt:
+    - name: web_domain
+	  prompt: web domain
+  tasks:
+    - name: Install Linux web browser {{ message }} 
+	  yum: pkg=linux state=installed
+	- name: check for Telnet Client
+	  yum: pkg=telnet state=absent
+	  
+ansible-playbook myfirstplayvars.yml
+
+copyright.yml contains
+message: Welcome to Ansible\
+author: Venkat
+
+webdefaults.yml contains
+apache_version: 2.6
+apache_mod_req: mod_ssl
+
+ansible-playbook myfirstplayvars.yml
+web domain: 
+
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 1.0
+  vars_files:
+    - conf/copyright.yml
+	- conf/webdefaults.yml
+  vars_prompt:
+    - name: web_domain
+	  prompt: web domain
+  tasks:
+    - name: Install Linux web browser {{ message }} 
+	  yum: pkg=linux state=installed
+	- name: check for Telnet Client  {{web_domain }}
+	  yum: pkg=telnet state=absent
+
+
+now provide promt in place of web_defaults: as webserver
+
+loop cocept:
+-------------
+
+web_apache_git_install_loop
+
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  tasks:
+    - name: Ensure that Apache and Git is installed
+	  yum: name={{ item }} state=present
+	  loop:
+	    - httpd
+		- git
+		
+
+
+vi web_apache_install_when.yml
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  tasks:
+    - name: Ensure that Apache is installed
+	  yum: name=httpd state=present
+	  when: ansible_os_family == "RedHat"
+	  
+	- name: Start Apache Services
+	  service: name=httpd enabled=yes state=started
+	 
+
+copy modules:
+=============
+
+cat copy_file.yml
+
+vi copy_file.yml
+--- # This is my  first YAML playbook for Ansible
+- hosts: webservers
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: no
+  tasks:
+   - name: write the file
+	 copy:
+	   src=/home/ansadmin/login.txt
+	   dest=/home/admin/venkat/login.txt
+
+ansible-playbook copy_file.yml
+
+
+	

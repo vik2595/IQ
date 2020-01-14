@@ -1,0 +1,33 @@
+RDS - Relational daatbase
+
+Click on RDS from Databse section
+from RDS - AWS Console -> click create database-> Seelct Mysql-> choose use case as Dev/Test -> choose mysql version 5.7.22-> db instance default one-> general purpose storage-> Estimated monthly costs will be displayed. Paid
+
+from RDS - AWS Console -> click create database-> Seelct Mysql-> seelct cehck box below only enable options for free-> choose use case as Dev/Test -> choose mysql version 5.7.22-> db instance default one-> general purpose storage-> Allocated storage 20 gb-> Max storage threshhold 1000 gb-> Settings-> DB Instance Identifier as wordpress-> Master user name as wordpress-> password as wordpress-> network sec leave as is -> public accessability yes-> vpc sec group create new-> database options-> db name as wordpress -> port as 3306 default-> backup default 7 days -> maintenacne leave as it is-> deletion protections as is-> Done.
+
+
+How to connect to this RDS DB?
+Download mysql work bench from google or Toad sql cleint
+go to databases-> Click on wordpress -> copy endpoint to connect to mysql work bench-> Connec name as MySQL_DB, standard TCP/IP-> Parameters (Host name as Endpoint created in AWS, Port 3306, username wordpress, password wordpress)
+Test connection-> All the availble tables will be availble.
+
+
+How to take a snapshot?
+go to snapshot tab and click on Snapshot -> DB Instance a swordpress and take snapshot
+this can be used and attched to another database when you create a new db again.
+
+
+Multi AZ?
+Availbility Zones
+Primary AZ will only have end point all the times
+in case of failures end point will be auto assigned to Next AZ.
+This is a paid option oin AWS.
+
+
+How to Create Dynamo DB database?
+Select dynamo db-> clcik create dynamo db-> Table name as EMP , pk as Stuid and number and create-> 
+Choose EMP table and crete item to create fields and values as this is a nO SQL fashioned DB.
+
+
+
+

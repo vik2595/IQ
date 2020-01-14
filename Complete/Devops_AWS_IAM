@@ -1,0 +1,39 @@
+AWS IAM:
+Cloud Utilization:
+on-premises: (Apps, Data, Runtime, Middleware, O/s, Virtualization, Servers. Storage, Networking)
+IaaS: (Apps, Data, Runtime, Middleware, O/s, (AWS:Virtualization, Servers. Storage, Networking))
+PaaS: (Apps, Data, ((AWS: Runtime, Middleware, O/s, Virtualization, Servers. Storage, Networking))
+SaaS: (AWS: Apps, Data, Runtime, Middleware, O/s, (AWS:Virtualization, Servers. Storage, Networking))
+
+
+Private Clouds
+Public Cloud
+Hybrid Clouds
+
+
+Login to AWS Account
+Security, Identity & Compliance
+Click on IAM
+Create Groups users adn Roles
+
+Go to Users-> Add user-> User Name as Adrim-> Access type, Programat5ic and  AWS management Comnsole, auto generated password provide-> permissions , Attaching existing and select s3 access only-> Tags,-> review-> Create user.
+save Access ID and Secret Key.
+
+
+To loging using above user
+Go to Dashbnard and copy IAM use signin link
+Account ID
+IAM user name
+password
+
+Create a Group
+Create new group-> Ansible Group-> Amazon EX2 Full Access-> Create group-
+Add users to above group now
+
+Policies;
+Admin
+read only
+
+You can create your own polocies as well
+seelct ec2 from services
+seelct list read, Write and review the policy

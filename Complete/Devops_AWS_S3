@@ -1,0 +1,35 @@
+S3: Simple Storage Service
+Secure
+durable
+scalable
+highly available
+
+
+AWS-> Service-> Storage-> S3 (obkect based everything)-> create bucket-> bucket names are unique accross AWS-> Adrimsample-> Edit public access settings and assign -> now public can access.
+
+Go into Adrim sample folder-> Upload-> add files-> abc.txt
+Open the file here and do below
+Copy object url and use it from anywhere (currently no aceess)
+From access menu make it public so that this file will be visible fro public
+
+Upload one more file and follow the steps and proceed further step by step
+Stoarge class option will be visible now, you need to select the required storage class option
+
+Enabling version control by uplaoding the same file again
+Add file
+login.txt -> properties -> Enable versioning-> save
+add some comments to login.txt and upload again
+Latest version will be visible now
+try deleting version and see it will be under delete marker 
+
+
+Upload the file again and add Lifecycle rule from lifecycle under management tab and choose current version and Transition to Standard-IA after 30 days , can add one more lifecycle as well with different settings
+also delete after 425 days if required.
+
+
+Use replication option to replicate the bucket under management tab only
+upload file again and it will now visible in 2 data centers
+
+
+Billing Dashboard:
+

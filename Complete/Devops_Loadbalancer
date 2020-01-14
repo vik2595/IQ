@@ -1,0 +1,47 @@
+Load Balancer:
+
+Create 2 webservers
+
+Choose AMi-> t2.micro-> Publeic IP-> Advanced options (paste below text)-> name Webserver1 -> use exissiting options and finish
+open port 80 under sec group
+
+In Advance details tab paste below
+#! /bin/bash
+yum install httpd -yum
+service httpd start
+echo "Welcome to devops-web1" > /var/www/html/index.html/index
+chkconfig httpd on
+
+
+Choose AMi-> t2.micro-> Publeic IP-> Advanced options (paste below text)-> name Webserver2 -> use exissiting options and finish
+open port 80 under sec group
+#! /bin/bash
+yum install httpd -yum
+service httpd start
+echo "Welcome to devops-web2" > /var/www/html/index.html/index
+chkconfig httpd on
+
+Click on loadbalancer now
+setup Classic balancer now:
+
+click on load balancer option now
+
+Classic
+application
+network
+
+Create load balancer-> Classic, create-> MywebLB-> assign sec groups exissiting-> Cinfigure Sec setting-> Configure Health Check-> Add EC2 instances-> seelct the 2 instances-> Add tag is oprtional-> Review and create.
+Copy the DNS name and try in browser now, you can see the web servers availble.
+
+
+click on target groups and create target grouops first
+Application Load balancer option:
+First Create-> Target groups Payroll, port 60, ->create (2, 2, 3, 6)
+First Create-> Target groups company, port 80, ->create  (2, 2, 3, 6))
+First Create-> Target groups account, port 70, ->create  (2, 2, 3, 6))
+
+Create Application Load balancer
+
+Configure load balancer-> name myLBA -> Listeners-> Http, 60, http 70, http 80-> select Availbility zones-. Exisiting Target group-> Create.
+
+Add Listeners by editing

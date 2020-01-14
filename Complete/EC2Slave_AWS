@@ -1,0 +1,84 @@
+Go to EC2 and create another slave
+Stop any runni9ng instances
+
+Choose AMI -> Seelct Linux Version-> Assign Public Ip enable-> storage (8 GB)-> Add Tags (Name, Jenkinsslave1) -> Conf Sec Group-> WebServerSG-> (SSH, TCP, 22, Anywhere) , (Custom TCP, TCP, 8090, Anywhere) -> Reviwe and Launch-> use the same key here as well-> choose exisiting key.
+
+From limits tab check the current limit on instances
+Limits will be setup by Amazon
+
+Connect to Webserver using SSH link
+From Gitbash connect
+
+by default ec2-user
+
+sudo su -
+
+Java on AWS:
+java -version will give you the java version
+sudo yum list| grep java-1.8
+sudo yum install java-1.8.0-openjdk-devel -y
+update-alternatives --config java -> selection number -> 2 to point to correct java version
+
+sudo su -
+create user from root
+useradd jenkinsslave1
+
+sudo su jenkinsslave1
+need to create ssh key to connect two systems
+Public key and private key
+ssh-keygen -t rsa -N "" -f /home/jenkinsslave1/.ssh/id_rsa
+
+ls -lat
+go to .ssh
+cd .ssh
+ls -alt
+
+id_rsa
+id_rsa.pub
+
+cat id_rsa.pub > authorized_keys
+chmod 700 authorized_keys
+
+
+login to Server now
+open git bash
+connect to server
+sudo su -
+
+ls -alt
+cd .ssh
+mkdir /var/lib/jenkins
+ls -alt
+go to root
+mkdir -p /var/lib/jenkins/.ssh
+cd /var/lib/jenkins/.ssh
+
+
+Scan the keys from slave to server
+
+note jenkins slave Private ip using SSH keyscan
+
+ssh-keyscan -H 172.31.29.124 (Priv IP) >>/var/lib/jenkins/.ssh/known_hosts
+
+ls
+cat known_hosts
+
+chown jenkins:jenkins known_hosts
+chmod 700 known_hosts
+cat known_hosts
+
+Now from Jenkins UI-> from Manage Jenkins-> Manage Nodes-> Add new Node -> Slave01-> no exec 5-> pwd -> /home/jenkinsslave1-> label as N1 -> launch method only build jobs with-> via ssh-> slave private ip-> select kind as SSH-> 
+user name jenkinsslave1-> get the key from slave machine using CD .ssh from cat id_rsa and copy the whole file and paste it-> more id_rsa-> add and select this cred from start to end into notepad-> click on relaunch.
+
+
+from jenkins
+configure
+restric where this can run
+select N1.
+ls workspace
+cd workspace
+job1.
+
+
+
+

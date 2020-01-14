@@ -1,0 +1,89 @@
+
+Ansible:
+========
+One Ansible Server
+Two Ansible Nodes/Slaves
+
+Create an EC2 Instance -> Redhat Enterprise -> T2 Micro-> Auto IP enable-> add storage-> Name and AnsibleServer-> Sec Conf as AnsibleServer (SSh, TCP, 22, Anywhere)-> Choose existing key pair -> Launch.
+
+Install Ansible Server on this machine:
+
+Create two Red-hat Linux EC2 instances
+Launch EC2 instances
+Go to root account   using  command(both servers) : sudo su –
+Update your EC2 instance  using command(both servers :  yum update -y
+Add a third party repository named EPEL(Extra packages for Enterprise Linux) using below command. Run on Master  server only 
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  (epel-release-latest-8.noarch.rpm)
+Install Ansible using below command. Run only on Master
+Yum install ansible
+Verify ansible version using below command
+Ansible –version
+
+Note: Install Java 1.8 and Git on Master 
+yum install java-1.8*
+yum install git
+
+Create 2 instances ata time by selecting Instances as 2 and follow below steps.
+Create an EC2 Instances -> Redhat Enterprise -> T2 Micro-> Auto IP enable-> add storage-> no name -> Sec Conf choose existing-> Choose existing key pair -> Launch. and then assign a name as Node 1 and Node2 accordingly for 2 nodes.
+
+
+Create a new user for ansible admin & grant admin access (sudo) to users(Master and nodes)
+Login Master and nodes systems
+Change user to root – sudo su –
+Create new user with name ansadmin and set the password using below commands on server machine
+useradd ansadmin
+Passwd  ansadmin (set the password and save it)
+Setup sudo access (both Master and nodes) using below commands
+visudo
+Under ec2-user add the new line with new username
+Ansadmin       ALL=(ALL)      NOPASSWD: ALL
+
+Enable user login on all EC2 instances (both Master and nodes)
+
+vi /etc/ssh/sshd_config
+Uncomment – PasswordAuthentication yes
+Comment – PasswordAuthentication no
+Save it 
+Restart service using command : service sshd restart
+
+Start Ansible Node 1 and Ansible Node 2 now and add below steps for each node 
+useradd ansadmin
+Passwd  ansadmin (set the password and save it)
+visudo
+Under ec2-user add the new line with new username
+Ansadmin       ALL=(ALL)      NOPASSWD: ALL
+vi /etc/ssh/sshd_config
+Uncomment – PasswordAuthentication yes
+Comment – PasswordAuthentication no
+Save it 
+Restart service using command : service sshd restart
+
+
+Login as ansadmin user on master and generate ssh key 
+su - ansadmin
+Run blow command 
+ssh-keygen
+Verify key using below command 
+ls –alt
+Cd .ssh
+Copy keys to target servers(nodes) using below command
+ssh-copy-id <target-node private ip>
+Ex: ssh-copy-id 104.102.90.11
+Now try to login node from master – it wont asking password 
+Command
+ssh 104.102.90.11
+Exit the node system then u will go back to master 
+
+Update target servers ip information on /etc/ansible/hosts file(Master)
+vi hosts
+sudo vi hosts
+add private ips of 2 nodes here
+
+ansible all -m ping 
+ansible all -a "df -h"
+vi /etc/ansible/hosts
+
+
+
+
+

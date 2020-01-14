@@ -1,0 +1,174 @@
+Ansible:
+Simple Agentless and powerful open source IT Automation Tool
+Provisioning
+Conf management
+App Deployment
+Automation
+Orchestration
+
+Its cross platform application linux to windows using WINRM and SSH for linux systems.
+
+Cross platform
+Human readable
+Version control
+Dynamic Inventories
+Orchestration
+
+
+Users
+Ansible Playbook
+inventory (Ip addresses)
+modules
+API
+Plugins
+Hosts
+networking
+Public/Private Cloud
+
+Inventory is a collection of hosts (nodes) with associated data and gtoupings that Ansible can connect and amanage.
+
+An adhoc command is a single Ansible task to perform quickly but dont want to save for later
+
+Modules are bit of code trasnferred to the target systems and executed to satisfy task.
+
+Plays  are ordered sets of tasks to execute against host selections from your inventory. A playbook is a file containing one or more plays.
+
+start Ansible server
+start ansible client1 only
+
+login to 
+Connect to Ansible Server
+
+su - ansadmin
+ansible --version
+
+cd /etc/ansible
+cat ansible.cfg
+cat hosts
+
+cd ~
+pwd
+/home/ansadmin
+ping and see if the connection is established between 2 nodes
+ansible all -m ping
+
+start Ansible Client2
+ansible all -m ping
+it will show connection successfull
+
+cd /etc/ansible/
+ls
+sudo vi hosts
+insert
+[web]
+172.31.21.27
+[db]
+172.31.28.225
+
+ansible web -m ping
+ansible db -m ping
+ansible-doc -l
+
+
+ansible documentation
+serach for modules
+and try few samples
+
+ansible-doc copy
+
+from Ans server
+
+mkdir maven project
+cd mavvenproject
+vi inventory
+insert
+ip addresses of your node systems
+[web]
+172.
+
+[db]
+172.
+
+save the file.
+ls
+inventory
+
+ansible all -i inventory -m ping
+
+ansible web -i inventory -m ping
+
+
+cd /etc/ansible/hosts to pick from defeult location
+
+global group creation
+web1 ansible_ssh_host=172.
+db1  ansible_ssh_host=172.
+
+[webservers]
+web1
+
+[dbservers]
+db1
+
+
+ansible webservers -i inventory -m ping
+ansible dbservers -i inventory -m ping
+
+
+web1 ansible_ssh_host=172.
+db1  ansible_ssh_host=172.
+
+[webservers]
+web1
+
+[dbservers]
+db1
+
+[datacenters:children]
+webservers
+dbservers
+
+ansible datacenters -i inventory -m ping
+
+ansible db1 -i inventory -a "df -h"
+ansible db1 -i inventory -a "free -m"
+
+
+Connect to Node1 using git bash to install git
+su - ansadmin
+
+
+git --version
+
+
+from server
+enter beklow command
+
+ansible datacenters -i inventory -m yum -a "name=git state=present" --sudo
+
+now go back and check 
+git --version
+its installed on the node machines
+
+
+to install webservers
+
+ansible datacenters -i inventory -m yum -a "name=httpd state=present" --sudo
+service httpd start
+
+ansible datacenters -i inventory -m yum -a "name=httpd enabled=yes state=present" --sudo
+
+ansible datacenters -i inventory -m yum -a "name=httpd enabled=yes state=started" --sudo
+
+ansible datacenters -i inventory -m service -a "name=httpd enabled=yes state=started" --sudo
+ansible datacenters -i inventory -m service -a "name=httpd enabled=yes state=stopped" --sudo
+
+ansible datacenters -i inventory -m service -a "name=mysql enabled=yes state=started" --sudo
+ansible datacenters -i inventory -m yum -a "name=mysql-server state=present" --sudo
+
+service mysqld status
+whereis mysql
+
+
+
+

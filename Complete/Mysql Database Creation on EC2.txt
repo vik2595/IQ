@@ -1,0 +1,18 @@
+yum install mysql-server -y
+
+service mysqld start
+
+/usr/bin/mysql_secure_installation   # Configure the mysql server
+
+mysql -u root -p    # login mySQL console 
+
+create database wordpress;
+
+GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'welcome';
+
+
+-----------------------------------
+
+CREATE USER 'wordpress'@'localhost' IDENTIFIED BY 'wordpress';
+
+GRANT ALL ON *.* to wordpress@'%' IDENTIFIED BY 'wordpress';

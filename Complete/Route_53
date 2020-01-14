@@ -1,0 +1,29 @@
+Route 53:
+
+To start website, you need to purchase domain like from godaddy
+here in Amazon we can buy using Domain Registration:
+adrimdevops.com
+
+
+Hosted Zones:
+Create hosted Zone
+domain name as adrimdevops.com and click on create
+type as public and create
+It will create 2 servers 
+
+now you can route the user requests to these servers based on the queues
+by using create recordset is first approach
+
+Second approach is through ALB by choosing Alias and private cloud option
+Create one ALB as previous
+
+
+Routing policy by weightage
+weight: 70 percent for server 1
+and 30 percent fro second server
+
+can also set latency wise
+
+
+
+

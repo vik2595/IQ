@@ -1,0 +1,118 @@
+EC2 Webserver (Tpmcat)
+
+Go to EC2 and create another server
+Stop any runni9ng instances
+
+Choose AMI -> Seelct Linux Version-> Assign Public Ip enable-> storage (8 GB)-> Add Tags (Name, Webserver) -> Conf Sec Group-> WebServerSG-> (SSH, TCP, 22, Anywhere) , (Custom TCP, TCP, 8090, Anywhere) -> Reviwe and Launch-> use the same key here as well-> choose exisiting key.
+
+From limits tab check the current limit on instances
+Limits will be setup by Amazon
+
+Connect to Webserver using SSH link
+From Gitbash connect
+
+by default ec2-user
+
+sudo su -
+
+Java on AWS:
+java -version will give you the java version
+sudo yum list| grep java-1.8
+sudo yum install java-1.8.0-openjdk-devel -y
+update-alternatives --config java -> selection number -> 2 to point to correct java version
+
+
+EC2
+Java 1.8
+http://http://apache.mirrors.lucidnetworks.net/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz 
+
+
+cd /opt
+wget http://http://apache.mirrors.lucidnetworks.net/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz 
+After the download completes extarct it.
+
+under /opt/apache-tomcat-9.0.27.tar.gz
+
+tar -zvxf apache-tomcat-9.0.27.tar.gz 
+it will extarct this into a folder
+
+ls -lrt
+apache-tomcat-9.0.27
+
+cd /opt/apache-tomcat-9.0.27
+chmod +x startup.sh
+chmod +x shutdown.sh
+
+ls -lart
+ls -alt
+
+cd ..
+ls
+
+ln -s /opt/apache-tomcat-8.5.40/bin/startup.sh /usr/local/bin/tomcatup
+ln -s /opt/apache-tomcat-8.5.40/bin/shutdown.sh /usr/local/bin/tomcatdown
+
+cd ~
+pwd
+
+/root
+
+tomcat
+
+
+cd /opt/apache-tomcat-9.0.27
+ls
+cd conf
+vi server.xml
+change the port number to 8090
+
+start tomcat server using tomcatup
+find / -name context.xml
+vi /opt/apache-tomcat-8.5.40/webapps/host-manager/META-INF/context.xml
+
+comment valve classname using <!-- -->
+esc, save abnd exit
+
+vi /opt/apache-tomcat-8.5.40/webapps/manager/META-INF/context.xml
+same steps as above
+
+tomcatdown
+
+tomcatup
+
+cd /opt/tomcat
+vi tomcat-users.xml
+add roles and  stop and re start tomcat using tomcatup
+and open using admin admin
+
+Now Start Jenkins Server
+
+Login to Jenkins
+Global tool conf
+Add Maven 
+M2_HOME
+/opt/apache-maven-3.5.4
+
+
+Add JDK
+whereis java
+
+cd /usr/lib/jvm
+ls -alt
+
+select java jdk amzn 
+
+JAVA_HOME
+usr/lib/jvm/..
+
+
+create a maven job and deploy in tomcat server
+
+plugins to downlaod
+deploy to container
+maven integration
+copy artifact
+artifactory
+github integration
+
+public ip always chnages so do modifications accordingly.

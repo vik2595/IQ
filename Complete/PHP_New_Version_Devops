@@ -1,0 +1,12 @@
+service httpd stop
+yum erase httpd httpd-tools apr apr-util
+yum remove php-*
+yum install php56
+yum list installed | grep php
+yum install php56-xml php56-xmlrpc php56-soap php56-gd
+yum serach php56
+yum install php56-mysqlnd
+service httpd start
+service httpd restart
+php -v
+

@@ -1,0 +1,136 @@
+Automate the instances availbility on demand using auto scaling
+
+First create Load balancer
+
+choose ALB
+
+Name: ACLB
+HTTP 80
+Availabilty: Select All
+Conf Sec : seelct existing SG from previous LB.
+config Routing:
+Target Group: New Target Group
+NAME: ACLDEV
+Targettyope: instances
+http, 80, http, /, trafficport, 2, 2, 3, 30, 200
+Register targets, Review and create.
+
+Launch Configuration Tab:
+
+launch config
+Auto scaling groups
+Create auto scaling geoup
+create or select launch config
+create auto scaling group
+
+Select get started -< Seelct AMI-> t2.micro-> create launch conf-> name: myLC -> User data: 
+#!/bin/bash
+yum install httpd -y
+service httpd start
+echo "Welcome to Devops" > /var/www/html/index.html
+chkconfig httpd on
+add storage
+conf sec group: 
+SSh-> TCP->22->Anywhere
+HTTP-> TCP-> 80-> customip-> seelct sg of created load balancer
+Review
+choose an existing pair
+create launch conf
+
+
+Conf Auto scalaing fgroup
+
+ASG
+MYLC
+2 instances
+network - select vpc
+subnet - add all the req availbility zones
+
+Advance details:
+Load balancing : Receive traffic from one or more 
+
+Target Groups: ACLDEV
+Health Check Type: ELB
+Health Check Grace period: 300
+config scaling policies
+seelct use scaling policies to adjust the capacity
+seelct between 2 and 6
+
+
+Increasae group size and decrese group size
+Add 1 instances when 60 
+
+decrease the when its 10 percent
+Review
+Add notif
+conf tags
+review
+Create auto scaling groups.
+
+
+Go back to instances now
+
+its creating 2 instances based on the conf we did
+go to auto scaling group
+instances
+try to terminate one here
+and the other will open again
+
+
+VPC:
+====
+We alwasy take automatic
+
+But real companies create their own VPC's.
+
+Seelct VPC under services:
+
+
+Got your vpc's
+
+AWS->VPC-> AZ1, AZ2-> Subnet_> 
+
+Create VPC-> MY VPC, 10.10.0.0/16, default-> create
+
+Create Internet Gateways -> by default we have one by amazon.
+if you want you can create one as below
+Create my inernet gateway -> seelct go to action and attach gateway to My VPC.
+
+
+Now subnet need to be created:
+
+Create subnet-> name, public subnet1, choose my vpc, az, useast 1a or canada, 10.10.1.0/24 and create.
+
+now create sample instance myweb using the above options:
+
+
+Go to your vpcs-> seelct my vpc-> from actions-> edit dns host name, enable check box. Now public Ip will be displayed fro this isnstance.
+
+Now go to create Route table:
+
+
+Create route table-> myroute-> my vpc and create.
+
+go to routes and add routes using edit routes
+
+0.0.0.0/0  through internet gateway created (IGw-x)earlier and save
+
+
+Now subnet2 need to be created:
+
+Create subnet-> name, public subnet2, choose vpc, , useast 1b , 10.10.1.0/24 and create.
+
+
+Now go to create another Route table:
+
+
+Create route table-> myroute1-> my vpc and create.
+
+go to routes and add routes using edit routes
+
+0.0.0.0/0  through internet gateway created (IGw-x)earlier and save
+
+
+now create instance with all these private options
+
+

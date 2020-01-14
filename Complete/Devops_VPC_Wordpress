@@ -1,0 +1,130 @@
+AWS diagrams
+draw.io
+
+Create Below Image:
+AWS Cloud-> Region-> VPC->  AZ1, AZ2-> Public subnet, private subnet -> internet gateway-> route table -> 
+User, arrows, SSh to connect to gateway and route table.
+
+Create web app:
+crete vpc-> mydemo vpc-> 10.0.0.0/16-> create
+from this VPC dash board: route table also created by default.
+create IGW-> mydemoigw-> create
+attch this gateway to vpc using VPC and Actions adn attching the gateway
+Create subnet-> Publicsubnet-> VPC-> 10.0.1.0/24
+Create subnet-> Privatesubnet-> VPC-> 10.0.2.0/24
+Create Route table-> mydemorouteweb-> select vpc->  create
+Create Route table-> mydemoroutedb-> select vpc-> create
+associate these rout tables with subnets now
+Seelct routes-> edit routes-> 0.0.0.0/0, mydeomigw-> save
+from subnets-> seelct publicsubnet-> from actions-> enable auto assign ip. save.
+create an instance now mywebserver with all req info
+create an instance now mydbserver with all req info -> mysql aurora under sec group, TCP, 3306, Anywhere -> existing key pair.
+from vpc, action, edit dns host name, enable.
+
+using aws endpoint connect to mywebserver
+now to connect from webserver to dbserver i.e public subnet to private subnet
+using pem key its possible
+vi aws_key.pem
+copy and paste here from original
+chmod 400 aws_key.pem
+ssh ec2-user@privateipofdb -i aws_key.pem
+now its connected to private subnet ie dbserver.
+sudo su -
+to install sql server db here
+yum install mysql-server -y
+it will throw an error.
+in thi scase nat gateway to be created
+
+create nat gateway-> seelct publib subnet-> create new EIP-> create
+go to route table, db route table, edit route, and select nat gateway here. and save
+now go back to terminal and try to install sam sql server installation, it will install, becasue its allowing the internent
+
+yum install mysql-server -y
+service mysqld start
+/usr/bin/mysql_secure_installation   # Configure the mysql server
+mysql -u root -p    # login mySQL console 
+create database wordpress;
+GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'welcome';
+
+-----------------------------------
+CREATE USER 'wordpress'@'localhost' IDENTIFIED BY 'wordpress';
+GRANT ALL ON *.* to wordpress@'%' IDENTIFIED BY 'wordpress';
+
+Now go to webserver terminal.
+
+#!/bin/bash
+yum install httpd mysql php php-mysql -y
+service httpd start
+cd /var/www/html/
+wget https://wordpress.org/latest.zip
+unzip latest.zip
+rm -Rf latest.zip
+cd wordpress/
+mv * ..
+cd ..
+rm -Rf wordpress
+chmod -R 755 wp-content
+chown -R apache.apache wp-content
+chkconfig httpd on
+
+**************************************
+
+open Browser
+enter Public IP 
+enter all the details 
+
+copy  wp-config.php file.
+
+Login Wordpress Server thry GitBash
+Goto Root account
+  ls
+   cd /var/www/html
+   vi wp-config.php
+
+NACL:
+we need to open in/out
+1024-65535 port for custom
+
+--------------------------------------
+For any issues encountered related to PHP this need to be done.
+
+service httpd stop
+yum erase httpd httpd-tools apr apr-util
+yum remove php-*
+yum install php56
+yum list installed | grep php
+yum install php56-xml php56-xmlrpc php56-soap php56-gd
+yum serach php56
+yum install php56-mysqlnd
+service httpd start
+service httpd restart
+php -v
+
+Now wordpress webpage will be displayed
+
+db name:wordpress
+username:root
+password:devops
+databasehost:bdprivateip
+tablepre:wp_
+
+copy the code here and past here
+Login Wordpress Server thry GitBash
+Goto Root account
+  ls
+   cd /var/www/html
+   vi wp-config.php
+   
+if everything is properly configured
+
+title: Awstrain
+username: admin
+pwd:devops
+email:test@test.com
+install wordpress
+login with details
+
+write your first blog post
+
+
+   
